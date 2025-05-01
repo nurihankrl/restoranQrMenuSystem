@@ -59,10 +59,10 @@ Bu proje, restoranlar için QR kod tabanlı bir menü yönetim sistemi sağlar. 
 ## Ekran Görüntüleri
 
 ### Ana Sayfa
-![Anasayfa](uploads/sc/main1.png)
+![Anasayfa](uploads/sc/main2.png)
 
 ### Admin Paneli
-![Admin Paneli](uploads/sc/admin1.png)
+![Admin Paneli](uploads/sc/panel1.png)
 
 ## İletişim
 
