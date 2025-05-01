@@ -40,7 +40,7 @@ Bu proje, restoranlar için QR kod tabanlı bir menü yönetim sistemi sağlar. 
 ### Admin Paneli
 - **Giriş Yapın**: Admin paneline giriş yapmak için varsayılan kullanıcı adı ve şifreyi kullanın:
   - Kullanıcı Adı: `admin`
-  - Şifre: `admin`
+  - Şifre: `123`
 - **Ürün ve Kategori Yönetimi**: Ürün ve kategorileri ekleyin, düzenleyin veya silin.
 - **Ayarlar**: Site başlığını ve logosunu değiştirin, bakım modunu etkinleştirin.
 
@@ -59,18 +59,10 @@ Bu proje, restoranlar için QR kod tabanlı bir menü yönetim sistemi sağlar. 
 ## Ekran Görüntüleri
 
 ### Ana Sayfa
-![Ana Sayfa](uploads/screenshots/homepage.png)
+![Ana Sayfa](https://i.hizliresim.com/5sxhbc5.png)
 
 ### Admin Paneli
 ![Admin Paneli](uploads/screenshots/admin-panel.png)
-
-## Katkıda Bulunma
-
-1. Bu projeyi forklayın.
-2. Yeni bir dal oluşturun: `git checkout -b yeni-ozellik`.
-3. Değişikliklerinizi yapın ve commit edin: `git commit -m 'Yeni özellik eklendi'`.
-4. Dalınızı push edin: `git push origin yeni-ozellik`.
-5. Bir Pull Request açın.
 
 ## Lisans
 
@@ -80,5 +72,5 @@ Bu proje MIT Lisansı ile lisanslanmıştır. Daha fazla bilgi için `LICENSE` d
 
 Herhangi bir sorunuz veya öneriniz varsa, lütfen benimle iletişime geçin:
 
-- **E-posta**: [email@example.com](mailto:email@example.com)
-- **GitHub**: [github.com/kullaniciadi](https://github.com/kullaniciadi)
+- **E-posta**: [nurihankrl07@gmail.com](mailto:nurihankrl07@gmail.com)
+- **Linkedln**: [linkedin.com/in/nurihankarul/](https://www.linkedin.com/in/nurihankarul/)
