@@ -15,7 +15,7 @@ Bu proje, restoranlar için QR kod tabanlı bir menü yönetim sistemi sağlar. 
 
 1. **Depoyu Klonlayın**:
    ```bash
-   git clone https://github.com/kullaniciadi/restoran-qr-menu.git
+   git clone https://github.com/nurihankrl/restoranQrMenuSystem.git
    ```
 
 2. **Veritabanını Ayarlayın**:
@@ -33,7 +33,7 @@ Bu proje, restoranlar için QR kod tabanlı bir menü yönetim sistemi sağlar. 
 
 4. **XAMPP Üzerinde Çalıştırın**:
    - Projeyi `htdocs` dizinine taşıyın.
-   - Tarayıcınızda `http://localhost/restoran-qr-menu` adresine gidin.
+   - Tarayıcınızda `http://localhost/restoranQrMenuSystem` adresine gidin.
 
 ## Kullanım
 
@@ -63,10 +63,6 @@ Bu proje, restoranlar için QR kod tabanlı bir menü yönetim sistemi sağlar. 
 
 ### Admin Paneli
 ![Admin Paneli](uploads/screenshots/admin-panel.png)
-
-## Lisans
-
-Bu proje MIT Lisansı ile lisanslanmıştır. Daha fazla bilgi için `LICENSE` dosyasına bakabilirsiniz.
 
 ## İletişim
 
