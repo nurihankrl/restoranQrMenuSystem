@@ -5,7 +5,6 @@ include 'inc/main.php';
 
 $successMessage = null;
 
-// Handle category addition
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addCategory'])) {
     $categoryName = sanitizeInput($_POST['categoryName']);
     $categoryImage = $_FILES['categoryImage'];
@@ -19,9 +18,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addCategory'])) {
             $errorMessage = "Sadece JPEG, PNG ve GIF formatındaki resim dosyalarına izin verilmektedir.";
         } else {
             $uploadDir = '../uploads/';
-            $fileExtension = pathinfo($categoryImage['name'], PATHINFO_EXTENSION); // Dosya uzantısını al
-            $randomNumber = rand(10000, 99999); // 5 basamaklı rastgele sayı oluştur
-            $imagePath = "KATE_" . uniqid() . "_$randomNumber.$fileExtension"; // Dosya adını oluştur
+            $fileExtension = pathinfo($categoryImage['name'], PATHINFO_EXTENSION); 
+            $randomNumber = rand(10000, 99999);
+            $imagePath = "KATE_" . uniqid() . "_$randomNumber.$fileExtension"; /
             $fullImagePath = $uploadDir . $imagePath;
 
             if (!move_uploaded_file($categoryImage['tmp_name'], $fullImagePath)) {
@@ -47,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addCategory'])) {
     }
 }
 
-// Handle category update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['categoryId'])) {
     $categoryId = intval($_POST['categoryId']);
     $categoryName = sanitizeInput($_POST['categoryName']);
@@ -61,17 +59,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['categoryId'])) {
     $successMessage = "<b>$categoryName</b> adlı kategori başarıyla güncellendi.";
 }
 
-// Handle category deletion
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteCategoryId'])) {
     $deleteCategoryId = intval($_POST['deleteCategoryId']);
 
     try {
-        // Fetch all image paths for the category
         $stmt = $db->prepare("SELECT image_path FROM category_images WHERE category_id = :category_id");
         $stmt->execute([':category_id' => $deleteCategoryId]);
         $images = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Delete each image file from the uploads directory
         foreach ($images as $image) {
             $imagePath = "../uploads/" . $image['image_path'];
             if (file_exists($imagePath)) {
@@ -79,10 +74,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteCategoryId'])) 
             }
         }
 
-        // Delete all image records for the category from the database
         $db->prepare("DELETE FROM category_images WHERE category_id = :category_id")->execute([':category_id' => $deleteCategoryId]);
 
-        // Delete the category itself
         $stmt = $db->prepare("DELETE FROM categories WHERE id = :id");
         $stmt->execute([':id' => $deleteCategoryId]);
 
@@ -92,12 +85,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteCategoryId'])) 
     }
 }
 
-// Handle category image addition
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addImageCategoryId'])) {
     $categoryId = intval($_POST['addImageCategoryId']);
     $categoryImage = $_FILES['categoryImage'];
 
-    // `categoryId` kontrolü
     $stmt = $db->prepare("SELECT COUNT(*) FROM categories WHERE id = :id");
     $stmt->execute([':id' => $categoryId]);
     $categoryExists = $stmt->fetchColumn();
@@ -124,7 +115,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addImageCategoryId'])
                     ':image_path' => $imagePath,
                 ]);
 
-                // Fetch the category name
                 $categoryNameStmt = $db->prepare("SELECT name FROM categories WHERE id = :id");
                 $categoryNameStmt->execute([':id' => $categoryId]);
                 $categoryName = $categoryNameStmt->fetchColumn();
@@ -139,7 +129,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addImageCategoryId'])
     }
 }
 
-// Handle category image deletion
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteImageId'])) {
     $imageId = intval($_POST['deleteImageId']);
     try {
@@ -170,37 +159,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteImageId'])) {
     }
 }
 
-// Handle setting featured image
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setFeaturedImageId'])) {
     $imageId = intval($_POST['setFeaturedImageId']);
     $categoryId = intval($_POST['categoryId']);
     $categoryName = htmlspecialchars($_POST['categoryName'] ?? 'Kategori', ENT_QUOTES, 'UTF-8'); // Varsayılan değer ekledik
 
-    // Reset all images for the category to not featured
     $db->prepare("UPDATE category_images SET is_featured = 0 WHERE category_id = :category_id")
         ->execute([':category_id' => $categoryId]);
 
-    // Set the selected image as featured
     $db->prepare("UPDATE category_images SET is_featured = 1 WHERE id = :id")
         ->execute([':id' => $imageId]);
 
     $successMessage = "<b>$categoryName</b> kategorisinin öne çıkan fotoğrafı başarıyla güncellendi.";
 }
 
-// Handle unsetting featured image
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['unsetFeaturedImageId'])) {
     $imageId = intval($_POST['unsetFeaturedImageId']);
     $categoryId = intval($_POST['categoryId']);
     $categoryName = htmlspecialchars($_POST['categoryName'] ?? 'Kategori', ENT_QUOTES, 'UTF-8'); // Varsayılan değer ekledik
 
-    // Reset the featured status of the selected image
     $db->prepare("UPDATE category_images SET is_featured = 0 WHERE id = :id")
         ->execute([':id' => $imageId]);
 
     $successMessage = "<b>$categoryName</b> kategorisinin öne çıkan fotoğrafı başarıyla iptal edildi.";
 }
 
-// Fetch categories
 try {
     $categories = $db->query("SELECT * FROM categories")->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
@@ -208,7 +191,6 @@ try {
     $errorMessage = "Kategoriler yüklenirken bir hata oluştu: " . $e->getMessage();
 }
 
-// Handle fetching category images for modal
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['fetchImagesCategoryId'])) {
     $categoryId = intval($_POST['fetchImagesCategoryId']);
 
@@ -240,10 +222,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['fetchImagesCategoryId
         }
         echo '</div>';
     }
-    exit; // Sadece modal için yanıt döndürüyoruz
+    exit;
 }
 
-// Handle fetching category images for modal
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['manageImagesCategoryId'])) {
     $categoryId = intval($_POST['manageImagesCategoryId']);
 
@@ -251,7 +232,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['manageImagesCategoryI
     $stmt->execute([':category_id' => $categoryId]);
     $images = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    // Modal içeriğini döndür
     echo '<div class="row">';
     foreach ($images as $image) {
         echo '<div class="col-md-3 text-center">';
@@ -278,7 +258,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['manageImagesCategoryI
         echo '</div>';
     }
     echo '</div>';
-    exit; // Sadece modal için yanıt döndürüyoruz
+    exit;
 }
 ?>
 
@@ -469,12 +449,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['manageImagesCategoryI
 
 <script>
     $(document).ready(function () {
-        // Automatically close alerts after 7 seconds
         setTimeout(function () {
             $('.alert').alert('close');
         }, 5000);
 
-        // Handle "Düzenle" button click
         $('.edit-category-btn').on('click', function () {
             const categoryId = $(this).data('id');
             const categoryName = $(this).data('name');
@@ -485,19 +463,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['manageImagesCategoryI
             $('#editCategoryModal').modal('show');
         });
 
-        // Handle "Fotoğrafları Yönet" button click
         $('.manage-images-btn').on('click', function () {
             const categoryId = $(this).data('id');
             const categoryName = $(this).data('name');
             $('#manageImagesModalLabel').html(`Kategori Fotoğrafları: <b>${categoryName}</b>`);
             $('#addImageCategoryId').val(categoryId);
 
-            // Fetch images for the selected category via kategoriApi.php
             $.ajax({
-                url: 'api/kategoriApi.php', // Doğru URL
+                url: 'api/kategoriApi.php',
                 method: 'POST',
                 data: {
-                    apiKey: 'Q492ASDFQWE1234', // Güvenlik anahtarı
+                    apiKey: 'Q492ASDFQWE1234', 
                     categoryId: categoryId
                 },
                 success: function (response) {
@@ -542,13 +518,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['manageImagesCategoryI
             $('#manageImagesModal').modal('show');
         });
 
-        // Ensure modal closes properly
         $('#editCategoryModal, #manageImagesModal').on('hidden.bs.modal', function () {
             $(this).find('form')[0].reset();
-            $('#imagesContainer').html(''); // Clear images container
+            $('#imagesContainer').html('');
         });
     });
 </script>
 </body>
 
-<?php ob_end_flush(); // Flush the output buffer ?>
+<?php ob_end_flush(); ?>

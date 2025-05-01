@@ -37,7 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!isset($errorMessage)) {
         try {
-            // Update settings in the database
             $stmt = $db->prepare("UPDATE settings SET site_title = :siteTitle, maintenance_mode = :maintenanceMode, site_logo = IF(:logoPath IS NOT NULL, :logoPath, site_logo) WHERE id = 1");
             $stmt->execute([
                 ':siteTitle' => $siteTitle,
@@ -47,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             $successMessage = "Ayarlar başarıyla güncellendi.";
 
-            // Redirect to avoid form resubmission on page refresh
             header("Location: ".$_SERVER['PHP_SELF']);
             exit;
 
@@ -57,7 +55,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Fetch current settings
 $settings = $db->query("SELECT * FROM settings LIMIT 1")->fetch(PDO::FETCH_ASSOC);
 $siteTitle = $settings['site_title'] ?? '';
 $siteLogo = $settings['site_logo'] ?? '';

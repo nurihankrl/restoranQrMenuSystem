@@ -83,9 +83,7 @@ $defaultTitle = $db->query("SELECT site_title, site_logo FROM settings LIMIT 1")
             </div>
         </div>
     </div>
-    <!-- page loader ends -->
 
-    <!-- Sidebar -->
     <div class="sidebar-wrap ">
         <div class="sidebar">
             <div class="container">
@@ -99,7 +97,6 @@ $defaultTitle = $db->query("SELECT site_title, site_logo FROM settings LIMIT 1")
                     </div>
                 </div>
 
-                <!-- user menu navigation -->
                 <div class="row mb-4">
                     <div class="col-12 px-0">
                         <ul class="nav nav-pills" id="docmenu">
@@ -132,6 +129,5 @@ $defaultTitle = $db->query("SELECT site_title, site_logo FROM settings LIMIT 1")
             </button>
         </div>
     </div>
-    <!-- Sidebar ends -->
 
 

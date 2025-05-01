@@ -6,10 +6,8 @@ include 'inc/main.php';
 $successMessage = null;
 $selectedCategoryId = $_POST['category_id'] ?? null;
 
-// Fetch categories
 $categories = $db->query("SELECT id, name FROM categories")->fetchAll(PDO::FETCH_ASSOC);
 
-// Handle product addition
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addProduct'])) {
     $productName = sanitizeInput($_POST['productName']);
     $productDescription = sanitizeInput($_POST['productDescription']);
@@ -59,17 +57,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addProduct'])) {
     }
 }
 
-// Handle product deletion
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteProductId'])) {
     $deleteProductId = intval($_POST['deleteProductId']);
 
     try {
-        // Fetch all image paths for the product
         $stmt = $db->prepare("SELECT image_path FROM product_images WHERE product_id = :product_id");
         $stmt->execute([':product_id' => $deleteProductId]);
         $images = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // Delete each image file from the uploads directory
         foreach ($images as $image) {
             $imagePath = "../uploads/" . $image['image_path'];
             if (file_exists($imagePath)) {
@@ -77,10 +72,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteProductId'])) {
             }
         }
 
-        // Delete all image records for the product from the database
         $db->prepare("DELETE FROM product_images WHERE product_id = :product_id")->execute([':product_id' => $deleteProductId]);
 
-        // Delete the product itself
         $stmt = $db->prepare("DELETE FROM products WHERE id = :id");
         $stmt->execute([':id' => $deleteProductId]);
 
@@ -90,13 +83,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteProductId'])) {
     }
 }
 
-// Handle unsetting featured image
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['unsetFeaturedImageId'])) {
     $imageId = intval($_POST['unsetFeaturedImageId']);
     $productId = intval($_POST['productId']);
 
     try {
-        // Reset the featured status of the selected image
         $db->prepare("UPDATE product_images SET is_featured = 0 WHERE id = :id")
             ->execute([':id' => $imageId]);
 
@@ -106,7 +97,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['unsetFeaturedImageId'
     }
 }
 
-// Handle setting featured image
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setFeaturedImageId'])) {
     $imageId = intval($_POST['setFeaturedImageId']);
     $productId = intval($_POST['productId']);
@@ -126,12 +116,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['setFeaturedImageId'])
     }
 }
 
-// Handle product image addition
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addImageProductId'])) {
     $productId = intval($_POST['addImageProductId']);
     $productImage = $_FILES['productImage'];
 
-    // `productId` kontrolü
     $stmt = $db->prepare("SELECT COUNT(*) FROM products WHERE id = :id");
     $stmt->execute([':id' => $productId]);
     $productExists = $stmt->fetchColumn();
@@ -156,7 +144,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addImageProductId']))
                 $db->prepare("UPDATE product_images SET is_featured = 0 WHERE product_id = :product_id")
                     ->execute([':product_id' => $productId]);
 
-                // Yeni fotoğrafı `is_featured = 1` olarak ekle
                 $stmt = $db->prepare("INSERT INTO product_images (product_id, image_path, is_featured) VALUES (:product_id, :image_path, 1)");
                 $stmt->execute([
                     ':product_id' => $productId,
@@ -173,7 +160,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['addImageProductId']))
     }
 }
 
-// Handle product image deletion
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteImageId'])) {
     $imageId = intval($_POST['deleteImageId']);
 
@@ -186,12 +172,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteImageId'])) {
         if ($image) {
             $imagePath = "../uploads/" . $image['image_path'];
 
-            // Delete the image file from the uploads directory
             if (file_exists($imagePath)) {
                 unlink($imagePath);
             }
 
-            // Delete the image record from the database
             $db->prepare("DELETE FROM product_images WHERE id = :id")->execute([':id' => $imageId]);
 
             $successMessage = "Fotoğraf başarıyla silindi.";
@@ -203,7 +187,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['deleteImageId'])) {
     }
 }
 
-// Handle product update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['editProductId'])) {
     $productId = intval($_POST['editProductId']);
     $productName = sanitizeInput($_POST['productName']);
@@ -227,7 +210,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['editProductId'])) {
     }
 }
 
-// Fetch products with category names
 try {
     $query = "
         SELECT p.*, c.name AS category_name 
@@ -488,14 +470,12 @@ try {
 
 <script>
     $(document).ready(function () {
-        // Handle "Fotoğrafları Yönet" button click
         $('.manage-images-btn').on('click', function () {
             const productId = $(this).data('id');
             const productName = $(this).data('name');
             $('#manageImagesModalLabel').html(`Ürün Fotoğrafları: <b>${productName}</b>`);
             $('#addImageProductId').val(productId);
 
-            // Fetch images for the selected product via urunlerApi.php
             $.ajax({
                 url: 'api/urunlerApi.php',
                 method: 'POST',
@@ -547,25 +527,22 @@ try {
             $('#manageImagesModal').modal('show');
         });
 
-        // Ensure modal closes properly
         $('#manageImagesModal').on('hidden.bs.modal', function () {
             $(this).find('form')[0].reset();
             $('#imagesContainer').html(''); // Clear images container
         });
 
-        // Handle image upload form submission
         $('#uploadImageForm').on('submit', function (e) {
             e.preventDefault();
             const formData = new FormData(this);
 
             $.ajax({
-                url: '', // Current page URL
+                url: '',
                 method: 'POST',
                 data: formData,
                 contentType: false,
                 processData: false,
                 success: function () {
-                    // Reload the page after successful upload
                     location.reload();
                 },
                 error: function () {
@@ -574,7 +551,6 @@ try {
             });
         });
 
-        // Handle "Düzenle" button click
         $('.edit-product-btn').on('click', function () {
             const productId = $(this).data('id');
             const productName = $(this).data('name');
@@ -591,7 +567,6 @@ try {
             $('#editProductModal').modal('show');
         });
 
-        // Automatically close alerts after 5 seconds
         setTimeout(function () {
             $('.alert').alert('close');
         }, 5000);
@@ -599,4 +574,4 @@ try {
 </script>
 </body>
 
-<?php ob_end_flush(); // Flush the output buffer ?>
+<?php ob_end_flush(); ?>

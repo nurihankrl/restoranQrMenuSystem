@@ -2,14 +2,11 @@
 $sayfaTitle = "Anasayfa";
 include 'inc/main.php';
 
-// İstatistikler
 $totalCategories = $db->query("SELECT COUNT(*) FROM categories")->fetchColumn();
 $totalProducts = $db->query("SELECT COUNT(*) FROM products")->fetchColumn();
 
-// Son Eklenen Ürünler
 $recentProducts = $db->query("SELECT name, price, created_at FROM products ORDER BY created_at DESC LIMIT 5")->fetchAll(PDO::FETCH_ASSOC);
 
-// PHP Versiyonu ve Disk Kullanımı
 $phpVersion = phpversion();
 $diskUsage = round(disk_free_space("/") / 1024 / 1024, 2) . " MB boş alan";
 ?>

@@ -23,16 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arama'])) {
 ?>
 
 <main class="main vh-100">
-
-    <!-- Begin page content -->
     <div class="container-fluid h-100">
         <div class="row h-100 flex-column">
-
             <div class="col-12 mb-0">
-                <!-- header -->
                 <header class="header row align-items-center">
-
-                    <!-- search -->
                     <div class="search-wrapper">
                         <div class="row gx-2">
                             <div class="col">
@@ -46,8 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arama'])) {
                         </div>
                         <div id="searchResults" class="mt-2"></div>
                     </div>
-                    <!-- search ends -->
-
                     <div class="col-auto pe-0">
                         <button class="btn btn-link btn-square menu-btn" type="button">
                             <i class="bi bi-list fs-4"></i>
@@ -61,29 +53,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arama'])) {
                             </div>
                         </div>
                     </div>
-
                 </header>
-                <!-- header ends -->
             </div>
-
             <div class="col position-relative page-content">
-                <!-- content page -->
                 <div class="row justify-content-center">
-
                     <div class="col-12 col-md-10 col-lg-8 col-xxl-7 my-3">
-
-                        <!-- search filter  -->
                         <div class="row mb-4">
                             <div class="col">
                                 <form action="arama.php" method="POST">
                                     <input type="text" name="arama" class="form-control form-control-lg form-control-rounded border-0 shadow-sm" id="search" placeholder="Bunu mu arıyorsun?" value="<?= htmlspecialchars($searchQuery) ?>">
                                 </form>
                             </div>
-
                         </div>
-                        <!-- search filter ends-->
-
-                        <!-- search results -->
                         <?php if (!empty($searchResults)): ?>
                             <div class="row">
                                 <?php foreach ($searchResults as $product): ?>
@@ -105,15 +86,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arama'])) {
                         <?php elseif ($_SERVER['REQUEST_METHOD'] === 'POST'): ?>
                             <p class="text-muted">Sonuç bulunamadı.</p>
                         <?php endif; ?>
-                        <!-- search results ends -->
-
                         <div class="row mb-3">
                             <div class="col">
                                 <h5>Popüler Kategoriler</h5>
                             </div>
-
                         </div>
-                        <!-- categories -->
                         <div class="row mb-3">
                             <div class="col-12 px-0">
                                 <div class="swiper categories">
@@ -138,9 +115,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arama'])) {
                                 </div>
                             </div>
                         </div>
-                        <!-- categories ends -->
-
-                        <!-- offer banner -->
                         <div class="card border-0 position-relative overflow-hidden mb-4">
                             <figure class="coverimg position-absolute w-100 h-100 start-0 top-0 m-0">
                                 <img src="https://atisbutikrestaurant.com.tr/wp-content/uploads/2021/06/2021-atis-serpme-kahvalti-1.jpg" class="mw-100" alt="">
@@ -150,18 +124,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arama'])) {
                                     <div class="col-5">
                                         <div class="bg-radial-gradient text-white text-center p-2 rounded">
                                             <h3>Serpme Kahvaltı</h3>
-
                                             <p class="text-muted small">
                                                 <p>Haftasonları Sadece 99.00₺&nbsp;</p>
-
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- offer banner ends -->
-
-                        <!-- color choices -->
                         <div class="row mb-4">
                             <div class="col-12">
                                 <ul class="personalise-color-list mb-1">
@@ -208,14 +177,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arama'])) {
                                 </div>
                             </div>
                         </div>
-                        <!-- color choices ends -->
-
-                        <!-- Popular Products -->
                         <div class="row mb-3">
                             <div class="col">
                                 <h5>En Çok Tercih Edilenler</h5>
                             </div>
-
                         </div>
                         <div class="row">
                             <?php
@@ -224,7 +189,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arama'])) {
                                 FROM products p 
                                 LEFT JOIN product_images pi 
                                 ON p.id = pi.product_id AND pi.is_featured = 1
-                                ORDER BY RAND() -- Ürünleri rastgele sırala
+                                ORDER BY RAND()
                                 LIMIT 8
                             ")->fetchAll(PDO::FETCH_ASSOC);
 
@@ -232,7 +197,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arama'])) {
                                 <div class="col-6 col-md-3 mb-3">
                                     <div class="card border-0 mb-4">
                                         <div class="card-body position-relative">
-                                            <figure class="h-120 text-center"> <!-- Fotoğraf yüksekliği artırıldı -->
+                                            <figure class="h-120 text-center">
                                                 <img src="../uploads/<?= $product['image_path'] ?>" alt="<?= $product['name'] ?>" class="mh-100 mw-100 rounded">
                                             </figure>
                                             <a href="urunView.php?id=<?= $product['id'] ?>" class="text-normal d-block mb-1">
@@ -247,18 +212,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arama'])) {
                                 <?php endif; ?>
                             <?php endforeach; ?>
                         </div>
-                        <!-- Popular Products ends -->
-
                     </div>
                 </div>
             </div>
-            
 <?php include 'inc/footer.php'; ?>
-
         </div>
     </div>
-    <!-- page content ends -->
 </main>
-
 <?php ob_end_flush(); ?>
 

@@ -25,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arama'])) {
     <div class="container-fluid h-100">
         <div class="row h-100 flex-column">
             <div class="col-12 mb-0">
-                <!-- header -->
                 <header class="header row align-items-center">
                     <div class="col-auto pe-0">
                         <button class="btn btn-link btn-square menu-btn" type="button">
@@ -41,14 +40,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arama'])) {
                         </div>
                     </div>
                 </header>
-                <!-- header ends -->
             </div>
 
             <div class="col position-relative page-content" style="min-height: 620.547px; max-height: 620.547px;">
-                <!-- content page -->
                 <div class="row justify-content-center">
                     <div class="col-12 col-md-10 col-lg-8 col-xxl-7 my-3">
-                        <!-- search filter -->
                         <div class="row mb-4">
                             <div class="col">
                                 <form action="arama.php" method="POST">
@@ -56,7 +52,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arama'])) {
                                 </form>
                             </div>
                         </div>
-                        <!-- search filter ends -->
 
                         <h6 class="subtitle"><a href="#" class="float-right small"></a></h6>
                         <ul class="list-group list-group-flush mb-4">
@@ -95,12 +90,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['arama'])) {
     </div>
 </main>
 
-<!-- Loader'ı gizlemek için JavaScript -->
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const loader = document.querySelector('.loader-wrap');
         if (loader) {
-            loader.style.display = 'none'; // Loader'ı gizle
+            loader.style.display = 'none';
         }
     });
 </script>

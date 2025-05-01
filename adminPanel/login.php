@@ -2,7 +2,6 @@
 session_start();
 include '../inc/db.php';
 
-// Redirect to admin panel if already logged in
 if (isset($_SESSION['user_id'])) {
     header('Location: ./');
     exit;

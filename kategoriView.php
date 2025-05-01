@@ -29,9 +29,7 @@ if (!$categoryId) {
     <div class="container-fluid h-100">
         <div class="row h-100 flex-column">
             <div class="col-12 mb-0">
-                <!-- header -->
                 <header class="header row align-items-center">
-                    <!-- search -->
                     <div class="search-wrapper">
                         <div class="row gx-2">
                             <div class="col">
@@ -45,7 +43,6 @@ if (!$categoryId) {
                             </div>
                         </div>
                     </div>
-                    <!-- search ends -->
 
                     <div class="col-auto pe-0">
                         <button class="btn btn-link btn-square menu-btn" type="button">
@@ -62,11 +59,9 @@ if (!$categoryId) {
                     </div>
 
                 </header>
-                <!-- header ends -->
             </div>
 
             <div class="col position-relative page-content">
-                <!-- content page -->
                 <div class="row justify-content-center">
 
                     <div class="col-12 col-md-10 col-lg-8 col-xxl-7 my-3">
